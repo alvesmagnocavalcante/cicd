@@ -31,7 +31,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Baixar codigo
+      - name: Baixar codigos
         uses: actions/checkout@v4
 
       - name: Build e Deploy
