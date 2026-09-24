@@ -24,7 +24,7 @@ jobs:
         run: ruff check .
 
       - name: Pytest
-        run: pytest
+        run: python -m pytest
 
   deploy:
     needs: test
