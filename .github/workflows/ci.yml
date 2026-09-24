@@ -1,10 +1,7 @@
-name: CI
+name: CI/CD
 
 on:
   push:
-    branches: [main]
-
-  pull_request:
     branches: [main]
 
 jobs:
@@ -12,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar código
+      - name: Baixar codigo
         uses: actions/checkout@v4
 
       - name: Configurar Python
@@ -20,11 +17,27 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar dependências
+      - name: Instalar dependencias
         run: pip install -r requirements.txt
 
       - name: Ruff
         run: ruff check .
 
       - name: Pytest
-        run: python -m pytest
+        run: pytest
+
+  deploy:
+    needs: test
+    runs-on: self-hosted
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Build e Deploy
+        run: |
+          docker compose down
+          docker compose up -d --build
+
+      - name: Verificar containers
+        run: docker compose ps
